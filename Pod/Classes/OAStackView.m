@@ -50,7 +50,7 @@
       self.layoutMarginsRelativeArrangement = [decoder decodeBoolForKey:@"UIStackViewLayoutMarginsRelative"];
     }
 
-    [self setNeedsLayout];
+    [self setNeedsUpdateConstraints];
   }
 
   return self;
@@ -61,7 +61,7 @@
 
   if (self) {
     [self commonInitWithInitalSubviews:views];
-    [self setNeedsLayout];
+    [self setNeedsUpdateConstraints];
   }
 
   return self;
@@ -127,7 +127,7 @@
 - (void)setAxis:(UILayoutConstraintAxis)axis {
   if (_axis == axis) { return; }
   _axis = axis;
-  [self setNeedsLayout];
+  [self setNeedsUpdateConstraints];
 }
 
 - (void)setAxisValue:(NSInteger)axisValue {
@@ -182,13 +182,13 @@
 }
 
 - (void)updateConstraints {
-  [super updateConstraints];
+    [super updateConstraints];
+    
+    [self layoutArrangedViews];
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    
-    [self layoutArrangedViews];
 }
 
 - (void)setAlignmentValue:(NSInteger)alignmentValue {
@@ -200,7 +200,7 @@
   if (_distribution == distribution) { return; }
 
   _distribution = distribution;
-  [self setNeedsLayout];
+  [self setNeedsUpdateConstraints];
 }
 
 - (void)setDistributionConstraints {
@@ -233,24 +233,24 @@
     [super setLayoutMargins:layoutMargins];
   } else {
     _compatibilityLayoutMargins = layoutMargins;
-    [self setNeedsLayout];
+    [self setNeedsUpdateConstraints];
   }
 }
 
 - (void)setLayoutMarginsRelativeArrangement:(BOOL)layoutMarginsRelativeArrangement {
   _layoutMarginsRelativeArrangement = layoutMarginsRelativeArrangement;
-  [self setNeedsLayout];
+  [self setNeedsUpdateConstraints];
 }
 
 #pragma mark - Overriden methods
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
-  [self setNeedsLayout];
+  [self setNeedsUpdateConstraints];
 }
 
 - (void)layoutMarginsDidChange {
   [super layoutMarginsDidChange];
-  [self setNeedsLayout];
+  [self setNeedsUpdateConstraints];
 }
 
 #pragma mark - Adding and removing
