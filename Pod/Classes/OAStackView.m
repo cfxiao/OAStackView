@@ -308,16 +308,24 @@
     BOOL isOnlyItem = previousView == nil && nextView == nil;
 
     if (isLastVisibleItem) {
-      constraints = @[[self lastViewConstraint]];
+        NSLayoutConstraint *constraint = [self lastViewConstraint];
+        if (constraint) {
+            constraints = @[constraint];
+        }
     } else if(isOnlyItem) {
       constraints = [self constraintsBetweenView:previousView ?: self andView:nextView ?: self inAxis:self.axis];
     } else if(isFirstVisibleView) {
-      constraints = @[[self firstViewConstraint]];
+        NSLayoutConstraint *constraint = [self firstViewConstraint];
+        if (constraint) {
+            constraints = @[constraint];
+        }
     } else {
       constraints = [self constraintsBetweenView:previousView ?: self andView:nextView ?: self inAxis:self.axis];
     }
 
-    [self removeConstraints:constraints];
+      if (constraints) {
+          [self removeConstraints:constraints];
+      }
 
     if (newItem) {
       [self.mutableArrangedSubviews insertObject:view atIndex:stackIndex];
